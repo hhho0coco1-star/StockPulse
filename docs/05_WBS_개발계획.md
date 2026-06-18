@@ -45,11 +45,13 @@
 ### Phase 2 — 인사이트 엔진
 - [ ] News Collector: 네이버 뉴스 수집 → `news.raw`
 - [ ] Fundamentals Collector: DART 재무 수집 → `fundamentals.raw`
-- [ ] Insight Service: Kafka Streams 윈도우 집계(모멘텀) + 실적·감성 종합
+- [ ] Insight Service: Kafka Streams 윈도우 집계(모멘텀) + 실적 종합
+- [ ] 밸류에이션 축: PER·PBR·PEG 계산 + 업종평균·과거밴드 대비 상대 위치
 - [ ] 감성 분석(룰/LLM — 착수 시 확정)
-- [ ] 전망 카드 MongoDB 저장 + `insight.updated` 발행
-- [ ] Insight REST(카드·근거) + Realtime 인사이트 푸시
-- [ ] 프론트 전망 카드 UI
+- [ ] 4축 종합 전망 카드 MongoDB 저장 + `insight.updated` 발행
+- [ ] 백테스트: 과거 점수 vs 이후 수익률 적중률 집계·저장
+- [ ] Insight REST(카드·근거·백테스트) + Realtime 인사이트 푸시
+- [ ] 프론트 전망 카드 UI(4축 + 적중률 표시)
 
 ### Phase 3 — 모의투자 Saga (수직 슬라이스 완성)
 - [ ] Account: 잔고·원장·Outbox

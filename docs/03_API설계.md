@@ -65,8 +65,9 @@
 | 메서드 | 경로 | 설명 |
 |--------|------|------|
 | GET | `/insights/{symbol}` | 종합 전망 카드 (점수·등급) |
-| GET | `/insights/{symbol}/factors` | 근거 상세 (모멘텀·실적·뉴스 분해) |
+| GET | `/insights/{symbol}/factors` | 근거 상세 (모멘텀·실적·**밸류에이션**·뉴스 4축 분해) |
 | GET | `/insights/strong?market=KR&page=` | 강세 종목 리스트 (점수 정렬) |
+| GET | `/insights/backtest?threshold=75&horizon=30` | 신호 적중률(과거 성과) 조회 |
 
 ### 2.4 Trading (:8086) — 모의 주문
 | 메서드 | 경로 | 설명 |
