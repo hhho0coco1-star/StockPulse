@@ -12,9 +12,10 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',-apple-system,'Malgun Gothic',sans-serif;}
   body{background:#080a0d;color:var(--text);padding:32px;}
-  h1.title{font-size:20px;margin-bottom:4px;}
-  p.sub{color:var(--muted);font-size:13px;margin-bottom:24px;}
-  .frames{display:flex;gap:28px;flex-wrap:wrap;}
+  .wrap{max-width:1140px;margin:0 auto;}
+  h1.title{font-size:20px;margin-bottom:4px;text-align:center;}
+  p.sub{color:var(--muted);font-size:13px;margin-bottom:24px;text-align:center;}
+  .frames{display:flex;gap:28px;flex-wrap:wrap;justify-content:center;align-items:flex-start;}
   .device{width:340px;}
   .device .cap{color:var(--muted);font-size:13px;margin-bottom:8px;text-align:center;}
   .screen{width:340px;height:720px;background:var(--bg);border:8px solid #1c2128;border-radius:32px;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 8px 30px rgba(0,0,0,.5);}
@@ -62,6 +63,7 @@
 </style>
 </head>
 <body>
+ <div class="wrap">
   <h1 class="title">StockPulse — 와이어프레임 프로토타입 (모바일 우선)</h1>
   <p class="sub">앱(React Native)과 모바일 웹이 공유하는 화면. 데스크톱 웹은 동일 화면의 반응형 확장. 색: 상승=빨강, 하락=파랑(국내 관례).</p>
   <div class="frames">
@@ -172,5 +174,6 @@
     </div>
 
   </div>
+ </div>
 </body>
 </html>
