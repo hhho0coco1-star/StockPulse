@@ -19,7 +19,7 @@
 - [x] 02_시스템아키텍처.md — 구성도·서비스목록(13개)·토픽·데이터흐름·확장성·배포토폴로지
 - [x] 03_API설계.md — 공통규약·서비스별 REST·WebSocket 채널·FCM 페이로드
 - [x] 04_DB설계.md — 저장소별 역할·PG 테이블(서비스별+Outbox)·TimescaleDB·Mongo·Redis 키
-- [ ] 05_WBS_개발계획.md — Phase별 작업 분해·마일스톤
+- [x] 05_WBS_개발계획.md — 마일스톤(DoD)·Phase별 작업분해·의존관계·진행규칙
 - [ ] 06_와이어프레임.md (+ HTML 프로토타입) — 화면 설계
 - [ ] 07_기술선택이유.md — Kotlin·Kafka·Saga·Redis 선택 근거
 - [ ] 08_시퀀스다이어그램.md — Saga·인사이트·시세푸시·채팅 플로우
