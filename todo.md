@@ -20,7 +20,7 @@
 - [x] 03_API설계.md — 공통규약·서비스별 REST·WebSocket 채널·FCM 페이로드
 - [x] 04_DB설계.md — 저장소별 역할·PG 테이블(서비스별+Outbox)·TimescaleDB·Mongo·Redis 키
 - [x] 05_WBS_개발계획.md — 마일스톤(DoD)·Phase별 작업분해·의존관계·진행규칙
-- [ ] 06_와이어프레임.md (+ HTML 프로토타입) — 화면 설계
+- [x] 06_와이어프레임.md (+ HTML 프로토타입 3화면) — 전 7화면 설계·웹/앱 차이
 - [ ] 07_기술선택이유.md — Kotlin·Kafka·Saga·Redis 선택 근거
 - [ ] 08_시퀀스다이어그램.md — Saga·인사이트·시세푸시·채팅 플로우
 
