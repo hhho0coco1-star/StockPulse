@@ -1,0 +1,35 @@
+# 환경변수 / 시크릿
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Kotlin / Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+*.class
+out/
+
+# Node / React / Expo
+node_modules/
+dist/
+.expo/
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 빌드 / 임시
+*.tmp
+coverage/
