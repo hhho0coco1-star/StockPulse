@@ -4,6 +4,7 @@
 
 ## 핵심 결정 메모 (확정)
 
+- **프로젝트 목적: 학습/포트폴리오 (실사용자 목표는 보류, 2026-06-19 결정)** — 헤비 설계 그대로 완성·연습에 집중. SafeAlert가 이미 분산시스템 포트폴리오 커버.
 - 도메인: 국내+해외 주식 (시세=KIS, 뉴스=네이버, 재무=DART)
 - 스택: Kotlin+Spring Boot MSA, +Kafka Streams·TimescaleDB·Coroutines·Testcontainers·CI/CD(Helm+GitHub Actions)·TradingView, 관측 Loki+Tempo, 후반 Chaos Mesh
 - 클라이언트: React 웹 + React Native(Expo) 앱 + FCM
@@ -13,7 +14,7 @@
 
 ---
 
-## 진행 중: 설계 문서 작성 (코딩 전)
+## ✅ 완료: 설계 문서 (01~08, 코딩 전)
 
 - [x] 01_기획서.md
 - [x] 02_시스템아키텍처.md — 구성도·서비스목록(13개)·토픽·데이터흐름·확장성·배포토폴로지
@@ -33,20 +34,21 @@
 
 ---
 
-## Phase 0 — 기반 구축 (설계 문서 이후)
+## ▶ Phase 0 — 기반 구축 (현재 단계)
 
-- [ ] 0-1 모노레포 폴더 구조 + git init + .gitignore
-- [ ] 0-2 docker-compose.yml (Kafka·Redis·PostgreSQL·MongoDB)
+- [x] git init + 원격 연결 + .gitignore (StockPulse repo)
+- [ ] 0-1 Gradle 멀티모듈 루트(settings/build.gradle.kts) + common 모듈 골격
+- [ ] 0-2 docker-compose.yml (Kafka·Redis·PostgreSQL·TimescaleDB·MongoDB)
 - [ ] 0-3 외부 API 키 3종 발급 (KIS·네이버·DART) — **사용자**
 - [ ] 0-4 발급 키로 실제 1회 호출 검증
-- [ ] 0-5 API Gateway + Auth 서비스 Kotlin 골격
+- [ ] 0-5 api-gateway + auth-service Kotlin 골격 (services/)
 - [ ] 0-6 README 골격
 
 ## Phase 1~8 (요약 — 시작 시 상세화)
 
 - [ ] Phase 1 — 시세 파이프라인 (Collector→Kafka→Redis→WebSocket, 프론트 시세판)
 - [ ] Phase 2 — 인사이트 엔진 (News/Fundamentals Collector + Insight Service)
-- [ ] Phase 3 — 모의투자 Saga (Trading·Account/Portfolio·Ranking, Outbox+보상)
+- [ ] Phase 3 — 모의투자 Saga (Trading·Account·Portfolio·Ranking, Outbox+보상)
 - [ ] Phase 4 — 커뮤니티·실용기능 (토론방·실시간 채팅·게시글, 워치리스트, 알림규칙+FCM)
 - [ ] Phase 5 — 안정성 (CB/retry/timeout, Kafka·Redis 장애 대응)
 - [ ] Phase 6 — 관측 (Prometheus·Grafana·Loki·Tempo)
