@@ -1,0 +1,29 @@
+# StockPulse — Gradle 버전 카탈로그
+# WBS 0-1 골격 단계: 최소 항목만 선언. 서비스 추가(WBS 0-5+) 시 확장.
+#
+# 버전 결정 근거 (architect 스펙 §3-1):
+#   - Kotlin 1.9.25  : Spring Boot 3.3.x와 검증된 조합
+#   - Spring Boot 3.3.5: Kotlin 1.9.25 · Java 21과 안정 조합
+#   - Spring Dependency Management 1.1.6: Spring Boot BOM 버전 정렬용
+#   - Gradle Wrapper: 8.10.2 (Java 21 toolchain 완전 지원)
+
+[versions]
+kotlin                    = "1.9.25"
+springBoot                = "3.3.5"
+springDependencyManagement = "1.1.6"
+
+[libraries]
+# ── common 모듈이 당장 사용할 최소 의존성 ──────────────────────────────────
+# 버전은 Spring BOM / Kotlin 플러그인이 정렬하므로 생략
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+kotlin-reflect        = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+
+# ── 테스트 ─────────────────────────────────────────────────────────────────
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+kotlin-test-junit5       = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
+
+[plugins]
+kotlin-jvm                  = { id = "org.jetbrains.kotlin.jvm",                     version.ref = "kotlin" }
+kotlin-spring               = { id = "org.jetbrains.kotlin.plugin.spring",           version.ref = "kotlin" }
+spring-boot                 = { id = "org.springframework.boot",                     version.ref = "springBoot" }
+spring-dependency-management = { id = "io.spring.dependency-management",             version.ref = "springDependencyManagement" }
