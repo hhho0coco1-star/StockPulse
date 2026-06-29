@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: auth-service
-  security:
-    user:
-      name: ""
-      password: ""
 
 logging:
   level:

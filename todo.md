@@ -41,7 +41,7 @@
 - [x] 0-2 docker-compose.yml (Kafka·Redis·PostgreSQL·TimescaleDB·MongoDB)
 - [x] 0-3 외부 API 키 3종 발급 (KIS·네이버·DART) — **사용자**
 - [x] 0-4 발급 키로 실제 1회 호출 검증
-- [ ] 0-5 api-gateway + auth-service Kotlin 골격 (services/)
+- [x] 0-5 api-gateway + auth-service Kotlin 골격 (services/)
 - [ ] 0-6 README 골격
 
 ## Phase 1~8 (요약 — 시작 시 상세화)
