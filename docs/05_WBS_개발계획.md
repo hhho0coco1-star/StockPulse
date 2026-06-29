@@ -23,15 +23,15 @@
 
 ## 2. Phase별 작업 분해 (WBS)
 
-### Phase 0 — 기반
-- [ ] 모노레포 디렉토리 구조 + Gradle 멀티모듈(또는 서비스별 디렉토리) 세팅
-- [ ] `docker-compose.yml`: Kafka(KRaft)·Redis·PostgreSQL·TimescaleDB·MongoDB
-- [ ] 외부 API 키 발급(KIS·네이버·DART) — **사용자**
-- [ ] 키로 실제 1회 호출 검증(KIS WS 연결 1건, 네이버/DART REST 1건)
-- [ ] API Gateway(Spring Cloud Gateway): JWT 필터·라우팅·Redis Rate Limit
-- [ ] Auth/User: 회원가입·로그인·JWT 발급·OAuth2 골격
-- [ ] 공통 모듈: 응답/에러 포맷, Outbox 공통 구현 베이스
-- [ ] README 골격 + CI 최소 워크플로(빌드)
+### Phase 0 — 기반 ✅ 진행중
+- [x] 모노레포 디렉토리 구조 + Gradle 멀티모듈 세팅 (WBS 0-1, 2026-06-22)
+- [x] `docker-compose.yml`: Kafka(KRaft)·Redis·PostgreSQL·TimescaleDB·MongoDB (WBS 0-2, 2026-06-22)
+- [x] 외부 API 키 발급(KIS·네이버·DART) — **사용자** (WBS 0-3, 2026-06-29)
+- [x] 키로 실제 1회 호출 검증 (WBS 0-4, 2026-06-29)
+- [x] API Gateway(Spring Cloud Gateway): JWT 필터·라우팅 골격 (WBS 0-5, 2026-06-29)
+- [x] Auth/User: 회원가입·로그인 엔드포인트 골격 (WBS 0-5, 2026-06-29)
+- [x] 공통 모듈: ApiResponse 응답/에러 포맷 (WBS 0-5, 2026-06-29)
+- [ ] README 골격 + CI 최소 워크플로(빌드) (WBS 0-6)
 
 ### Phase 1 — 시세 파이프라인 (수직 슬라이스 시작)
 - [ ] Market Collector: KIS WS 수신(Coroutines) → `market.tick` 발행
