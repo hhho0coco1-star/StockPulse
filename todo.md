@@ -47,7 +47,9 @@
 ## Phase 1~8 (요약 — 시작 시 상세화)
 
 - [x] Phase 1 — 시세 파이프라인 (Collector→Kafka→Redis→WebSocket, 프론트 시세판)
-- [ ] Phase 2 — 인사이트 엔진 (News/Fundamentals Collector + Insight Service)
+  - ⚠️ D6·D8 재검증 필요 — KIS WebSocket은 평일 장 시간(09:00~15:30)에만 연결 가능. Approval Key 발급은 성공 확인됨.
+- [x] Phase 2 — 인사이트 엔진 (News/Fundamentals Collector + Insight Service)
+  - ⚠️ D3(fundamentals-collector) 런타임 검증 별도 필요 — DART 재무 수집은 cron(매일 02:00) 기반, 첫 수집 후 /insights 점수 정상화 예상
 - [ ] Phase 3 — 모의투자 Saga (Trading·Account·Portfolio·Ranking, Outbox+보상)
 - [ ] Phase 4 — 커뮤니티·실용기능 (토론방·실시간 채팅·게시글, 워치리스트, 알림규칙+FCM)
 - [ ] Phase 5 — 안정성 (CB/retry/timeout, Kafka·Redis 장애 대응)

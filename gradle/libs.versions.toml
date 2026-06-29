@@ -42,6 +42,9 @@ jjwt-api                     = { module = "io.jsonwebtoken:jjwt-api",     versio
 jjwt-impl                    = { module = "io.jsonwebtoken:jjwt-impl",    version.ref = "jjwt" }
 jjwt-jackson                 = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
 
+# ── Phase 2 — news-collector / fundamentals-collector / insight-service ─────
+spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
+
 # ── 테스트 ─────────────────────────────────────────────────────────────────
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 kotlin-test-junit5       = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }

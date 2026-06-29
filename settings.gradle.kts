@@ -16,7 +16,10 @@ include(
     "services:api-gateway",
     "services:auth-service",
     "services:market-collector",
-    "services:realtime-gateway"
+    "services:realtime-gateway",
+    "services:news-collector",
+    "services:fundamentals-collector",
+    "services:insight-service"
 )
 
 // ── 미등록 서비스 (이후 서비스별로 순차 추가 예정) ─────────────────

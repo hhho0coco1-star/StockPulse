@@ -1,0 +1,26 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: news-collector
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER:stockpulse}:${MONGO_PASSWORD:changeme}@localhost:27017/stockpulse?authSource=admin
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+naver:
+  client-id: ${NAVER_CLIENT_ID}
+  client-secret: ${NAVER_CLIENT_SECRET}
+
+collect:
+  symbols: "005930,000660"
+  interval-ms: 1800000
+
+logging:
+  level:
+    com.stockpulse: DEBUG
