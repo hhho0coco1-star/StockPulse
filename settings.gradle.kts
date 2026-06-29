@@ -12,14 +12,16 @@ rootProject.name = "stockpulse"
 
 // ── 등록된 모듈 ─────────────────────────────────────────────────────────────
 include("common")
+include(
+    "services:api-gateway",
+    "services:auth-service"
+)
 
-// ── 미등록 서비스 (WBS 0-5 이후 서비스별로 순차 추가 예정) ─────────────────
-// 예: include("services:api-gateway")
-// 예: include("services:auth-service")
+// ── 미등록 서비스 (이후 서비스별로 순차 추가 예정) ─────────────────
 // 서비스가 실제 구현될 때 아래 형태로 추가:
 // include(
-//     "services:api-gateway",
-//     "services:auth-service",
+//     "services:api-gateway",     // 완료 (WBS 0-5)
+//     "services:auth-service",    // 완료 (WBS 0-5)
 //     "services:user-service",
 //     "services:stock-service",
 //     "services:portfolio-service",
