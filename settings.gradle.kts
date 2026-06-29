@@ -14,7 +14,9 @@ rootProject.name = "stockpulse"
 include("common")
 include(
     "services:api-gateway",
-    "services:auth-service"
+    "services:auth-service",
+    "services:market-collector",
+    "services:realtime-gateway"
 )
 
 // ── 미등록 서비스 (이후 서비스별로 순차 추가 예정) ─────────────────

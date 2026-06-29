@@ -46,7 +46,7 @@
 
 ## Phase 1~8 (요약 — 시작 시 상세화)
 
-- [ ] Phase 1 — 시세 파이프라인 (Collector→Kafka→Redis→WebSocket, 프론트 시세판)
+- [x] Phase 1 — 시세 파이프라인 (Collector→Kafka→Redis→WebSocket, 프론트 시세판)
 - [ ] Phase 2 — 인사이트 엔진 (News/Fundamentals Collector + Insight Service)
 - [ ] Phase 3 — 모의투자 Saga (Trading·Account·Portfolio·Ranking, Outbox+보상)
 - [ ] Phase 4 — 커뮤니티·실용기능 (토론방·실시간 채팅·게시글, 워치리스트, 알림규칙+FCM)
