@@ -7,7 +7,6 @@ import com.stockpulse.market.kafka.TickProducer
 import com.stockpulse.market.repository.TickRepository
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 import java.time.Instant
 
@@ -17,7 +16,6 @@ class TickService(
     private val tickProducer: TickProducer,
     private val redisTemplate: StringRedisTemplate
 ) {
-    @Transactional
     fun process(symbol: String, price: BigDecimal, volume: Long) {
         val now = Instant.now()
 

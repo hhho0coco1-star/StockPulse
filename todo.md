@@ -47,7 +47,7 @@
 ## Phase 1~8 (요약 — 시작 시 상세화)
 
 - [x] Phase 1 — 시세 파이프라인 (Collector→Kafka→Redis→WebSocket, 프론트 시세판)
-  - ⚠️ D6·D8 재검증 필요 — KIS WebSocket은 평일 장 시간(09:00~15:30)에만 연결 가능. Approval Key 발급은 성공 확인됨.
+  - ✅ D6·D8 검증 완료 (2026-06-30) — WebSocket URL: ws://ops.koreainvestment.com:31000, 삼성전자 실시간 틱 수신 + TimescaleDB 적재 확인
 - [x] Phase 2 — 인사이트 엔진 (News/Fundamentals Collector + Insight Service)
   - ⚠️ D3(fundamentals-collector) 런타임 검증 별도 필요 — DART 재무 수집은 cron(매일 02:00) 기반, 첫 수집 후 /insights 점수 정상화 예상
 - [x] Phase 3 — 모의투자 Saga (Trading·Account·Portfolio·Ranking, Outbox+보상)

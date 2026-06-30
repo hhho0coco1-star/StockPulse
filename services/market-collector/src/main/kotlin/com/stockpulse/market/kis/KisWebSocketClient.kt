@@ -51,7 +51,9 @@ class KisWebSocketClient(
             buildSubscribeMessage(approvalKey, symbols.first())
         )
 
+        log.info("KIS WebSocket 연결 중: $wsUrl")
         client.execute(URI(wsUrl)) { session ->
+            log.info("KIS WebSocket 세션 수립 완료")
             val sends = session.send(
                 Mono.just(session.textMessage(subscribeMsg))
             )
@@ -81,7 +83,7 @@ class KisWebSocketClient(
 
     private fun parseTick(raw: String) {
         try {
-            if (raw.startsWith("{") || raw.startsWith("0|")) return
+            if (raw.startsWith("{")) return  // 구독 확인 JSON 응답
             val parts = raw.split("|")
             if (parts.size < 4) return
             val data = parts[3].split("^")
@@ -89,6 +91,7 @@ class KisWebSocketClient(
             val symbol = data[0]
             val price  = BigDecimal(data[2])
             val volume = data[12].toLongOrNull() ?: 0L
+            log.info("틱 수신: $symbol price=$price volume=$volume")
             scope.launch { tickService.process(symbol, price, volume) }
         } catch (e: Exception) {
             log.debug("틱 파싱 스킵: ${e.message}")

@@ -30,7 +30,7 @@ kis:
   app-key: ${KIS_APP_KEY}
   app-secret: ${KIS_APP_SECRET}
   base-url: https://openapivts.koreainvestment.com:29443
-  ws-url: wss://openapivts.koreainvestment.com:29443/websocket
+  ws-url: ws://ops.koreainvestment.com:31000
   subscribe-symbols: "005930,000660"
 
 logging:
