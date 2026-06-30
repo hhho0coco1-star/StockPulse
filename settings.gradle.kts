@@ -19,7 +19,11 @@ include(
     "services:realtime-gateway",
     "services:news-collector",
     "services:fundamentals-collector",
-    "services:insight-service"
+    "services:insight-service",
+    "services:trading-service",
+    "services:account-service",
+    "services:portfolio-service",
+    "services:ranking-service"
 )
 
 // ── 미등록 서비스 (이후 서비스별로 순차 추가 예정) ─────────────────
