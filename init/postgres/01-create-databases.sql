@@ -9,3 +9,5 @@ CREATE DATABASE portfolio;
 CREATE DATABASE trading;
 CREATE DATABASE community;
 CREATE DATABASE notification;
+CREATE DATABASE discussion;
+CREATE DATABASE watchlist;

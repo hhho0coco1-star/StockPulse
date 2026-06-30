@@ -51,7 +51,7 @@
 - [x] Phase 2 — 인사이트 엔진 (News/Fundamentals Collector + Insight Service)
   - ⚠️ D3(fundamentals-collector) 런타임 검증 별도 필요 — DART 재무 수집은 cron(매일 02:00) 기반, 첫 수집 후 /insights 점수 정상화 예상
 - [x] Phase 3 — 모의투자 Saga (Trading·Account·Portfolio·Ranking, Outbox+보상)
-- [ ] Phase 4 — 커뮤니티·실용기능 (토론방·실시간 채팅·게시글, 워치리스트, 알림규칙+FCM)
+- [x] Phase 4 — 커뮤니티·실용기능 (토론방·실시간 채팅·게시글, 워치리스트, 알림규칙+FCM)
 - [ ] Phase 5 — 안정성 (CB/retry/timeout, Kafka·Redis 장애 대응)
 - [ ] Phase 6 — 관측 (Prometheus·Grafana·Loki·Tempo)
 - [ ] Phase 7 — 부하/장애 테스트 (k6, Chaos Mesh 장애 주입, 트러블슈팅)

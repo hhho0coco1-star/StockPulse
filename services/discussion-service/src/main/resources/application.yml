@@ -1,0 +1,23 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: discussion-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/discussion
+    username: ${POSTGRES_USER:stockpulse}
+    password: ${POSTGRES_PASSWORD:changeme}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:changeme}
+
+logging:
+  level:
+    com.stockpulse: DEBUG

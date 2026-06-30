@@ -23,7 +23,10 @@ include(
     "services:trading-service",
     "services:account-service",
     "services:portfolio-service",
-    "services:ranking-service"
+    "services:ranking-service",
+    "services:discussion-service",
+    "services:watchlist-service",
+    "services:notification-service"
 )
 
 // ── 미등록 서비스 (이후 서비스별로 순차 추가 예정) ─────────────────
