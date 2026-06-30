@@ -5,6 +5,7 @@ import com.stockpulse.market.service.TickService
 import jakarta.annotation.PostConstruct
 import kotlinx.coroutines.*
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import kotlinx.coroutines.slf4j.MDCContext
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -23,7 +24,9 @@ class KisWebSocketClient(
     @Value("\${kis.subscribe-symbols}") private val symbols: List<String>
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    // MDCContext: 코루틴 dispatcher 전환 시에도 MDC(traceId) 유지 (Phase 6 관측)
+    // 단, KIS 틱 수신은 외부 푸시 트리거라 inbound trace span이 없어 traceId는 비어있는 게 정상
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob() + MDCContext())
 
     @PostConstruct
     fun connect() {

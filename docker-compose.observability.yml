@@ -1,0 +1,101 @@
+# StockPulse — Phase 6 관측 스택 (Prometheus · Grafana · Loki · Tempo · Promtail)
+# 기존 docker-compose.yml의 stockpulse-net 에 합류한다.
+# 기동: docker compose -f docker-compose.yml -f docker-compose.observability.yml up -d
+# 관측만: docker compose -f docker-compose.observability.yml up -d (네트워크 external 참조)
+
+services:
+  # ── Prometheus (메트릭 수집) ────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: stockpulse-prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=7d"
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # 호스트 bootRun 서비스 scrape용
+    networks:
+      - stockpulse-net
+
+  # ── Loki (로그 집계) ────────────────────────────────────────────────────
+  loki:
+    image: grafana/loki:3.2.0
+    container_name: stockpulse-loki
+    command: ["-config.file=/etc/loki/loki-config.yml"]
+    ports:
+      - "${LOKI_PORT:-3100}:3100"
+    volumes:
+      - ./observability/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki-data:/loki
+    networks:
+      - stockpulse-net
+
+  # ── Promtail (컨테이너/파일 로그 → Loki) ─────────────────────────────────
+  # 선택: 서비스가 docker로 뜰 때 컨테이너 로그를 긁어 Loki로 전송.
+  # 호스트 bootRun + loki-logback-appender 사용 시에는 없어도 무방.
+  promtail:
+    image: grafana/promtail:3.2.0
+    container_name: stockpulse-promtail
+    command: ["-config.file=/etc/promtail/promtail-config.yml"]
+    volumes:
+      - ./observability/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    depends_on:
+      - loki
+    networks:
+      - stockpulse-net
+
+  # ── Tempo (분산 트레이싱) ───────────────────────────────────────────────
+  tempo:
+    image: grafana/tempo:2.6.1
+    container_name: stockpulse-tempo
+    command: ["-config.file=/etc/tempo/tempo.yml"]
+    ports:
+      - "${TEMPO_HTTP_PORT:-3200}:3200"   # Grafana 조회
+      - "${TEMPO_OTLP_GRPC:-4317}:4317"   # OTLP gRPC 수신
+      - "${TEMPO_OTLP_HTTP:-4318}:4318"   # OTLP HTTP 수신(대안)
+    volumes:
+      - ./observability/tempo/tempo.yml:/etc/tempo/tempo.yml:ro
+      - tempo-data:/var/tempo
+    networks:
+      - stockpulse-net
+
+  # ── Grafana (대시보드) ──────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:11.2.2
+    container_name: stockpulse-grafana
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_USER:-admin}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_PASSWORD:-admin}"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"          # 학습 편의: 익명 조회 허용
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - loki
+      - tempo
+    networks:
+      - stockpulse-net
+
+volumes:
+  prometheus-data:
+  loki-data:
+  tempo-data:
+  grafana-data:
+
+# 기존 docker-compose.yml에서 생성한 네트워크를 재사용(external).
+# 네트워크명은 `docker network ls`로 확정: stockpulse_stockpulse-net
+networks:
+  stockpulse-net:
+    external: true
+    name: stockpulse_stockpulse-net

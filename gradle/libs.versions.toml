@@ -15,6 +15,7 @@ springCloud               = "2023.0.3"
 jjwt                      = "0.12.6"
 coroutines                = "1.8.1"
 resilience4j              = "2.2.0"
+lokiLogback               = "1.5.2"
 
 [libraries]
 # ── 공통 ────────────────────────────────────────────────────────────────────
@@ -52,6 +53,15 @@ resilience4j-kotlin       = { module = "io.github.resilience4j:resilience4j-kotl
 spring-boot-starter-aop   = { module = "org.springframework.boot:spring-boot-starter-aop" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+
+# ── Phase 6 관측 (Prometheus·Loki·Tempo) ────────────────────────────────────
+# micrometer / opentelemetry는 Spring Boot 3.3.5 BOM이 버전 관리 → version.ref 생략
+micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+micrometer-tracing-bridge-otel = { module = "io.micrometer:micrometer-tracing-bridge-otel" }
+opentelemetry-exporter-otlp    = { module = "io.opentelemetry:opentelemetry-exporter-otlp" }
+loki-logback-appender          = { module = "com.github.loki4j:loki-logback-appender", version.ref = "lokiLogback" }
+micrometer-context-propagation = { module = "io.micrometer:context-propagation" }
+kotlinx-coroutines-slf4j       = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "coroutines" }
 
 # ── 테스트 ─────────────────────────────────────────────────────────────────
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }

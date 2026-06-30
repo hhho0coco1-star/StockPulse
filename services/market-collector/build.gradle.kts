@@ -23,5 +23,13 @@ dependencies {
     implementation(libs.spring.boot.starter.aop)
     implementation(libs.spring.boot.starter.actuator)
 
+    // ── Phase 6 관측 ──────────────────────────────────────────
+    implementation(libs.micrometer.registry.prometheus)
+    implementation(libs.micrometer.tracing.bridge.otel)
+    implementation(libs.opentelemetry.exporter.otlp)
+    implementation(libs.loki.logback.appender)
+    implementation(libs.micrometer.context.propagation)   // reactive 컨텍스트 전파
+    implementation(libs.kotlinx.coroutines.slf4j)          // 코루틴 MDC 전파
+
     testImplementation(libs.spring.boot.starter.test)
 }

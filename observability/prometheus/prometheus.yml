@@ -1,0 +1,29 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'stockpulse-services'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets:
+          - 'host.docker.internal:8080'   # api-gateway
+          - 'host.docker.internal:8081'   # auth-service
+          - 'host.docker.internal:8082'   # market-collector
+          - 'host.docker.internal:8083'   # news-collector
+          - 'host.docker.internal:8084'   # fundamentals-collector
+          - 'host.docker.internal:8085'   # insight-service
+          - 'host.docker.internal:8086'   # trading-service
+          - 'host.docker.internal:8087'   # account-service
+          - 'host.docker.internal:8088'   # portfolio-service
+          - 'host.docker.internal:8089'   # ranking-service
+          - 'host.docker.internal:8090'   # realtime-gateway
+          - 'host.docker.internal:8091'   # discussion-service
+          - 'host.docker.internal:8092'   # notification-service
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+
+  - job_name: 'prometheus-self'
+    static_configs:
+      - targets: ['localhost:9090']

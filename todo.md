@@ -54,7 +54,8 @@
 - [x] Phase 4 — 커뮤니티·실용기능 (토론방·실시간 채팅·게시글, 워치리스트, 알림규칙+FCM)
 - [x] Phase 5 — 안정성 (CB/retry/timeout, Kafka·Redis 장애 대응)
   - Resilience4j(CB·Retry·TimeLimiter), Kafka DLT, Redis fallback, GlobalExceptionHandler(6개 서비스) + 요청 검증 표준화
-- [ ] Phase 6 — 관측 (Prometheus·Grafana·Loki·Tempo)
+- [x] Phase 6 — 관측 (Prometheus·Grafana·Loki·Tempo)
+  - 14개 서비스 Micrometer 계측(prometheus·tracing-otel·loki appender) + reactive 3개 Reactor Context 전파 + 관측 인프라 5컨테이너. OTLP endpoint는 HTTP 4318/v1/traces(스펙 4317 gRPC 오류 수정). 검증: 메트릭 노출·타겟 UP·Loki 로그·Tempo 트레이스 PASS
 - [ ] Phase 7 — 부하/장애 테스트 (k6, Chaos Mesh 장애 주입, 트러블슈팅)
 - [ ] Phase 8 — 배포/가용성 (K8s+HPA, Helm+GitHub Actions, 웹 실배포)
 - [ ] Phase 9 — 앱 (React Native/Expo, FCM 푸시)
