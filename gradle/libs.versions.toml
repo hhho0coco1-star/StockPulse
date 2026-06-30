@@ -14,6 +14,7 @@ springDependencyManagement = "1.1.6"
 springCloud               = "2023.0.3"
 jjwt                      = "0.12.6"
 coroutines                = "1.8.1"
+resilience4j              = "2.2.0"
 
 [libraries]
 # ── 공통 ────────────────────────────────────────────────────────────────────
@@ -44,6 +45,13 @@ jjwt-jackson                 = { module = "io.jsonwebtoken:jjwt-jackson", versio
 
 # ── Phase 2 — news-collector / fundamentals-collector / insight-service ─────
 spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }
+
+# ── Phase 5 안정성 (Resilience4j) ───────────────────────────────────────────
+resilience4j-spring-boot3 = { module = "io.github.resilience4j:resilience4j-spring-boot3", version.ref = "resilience4j" }
+resilience4j-kotlin       = { module = "io.github.resilience4j:resilience4j-kotlin",       version.ref = "resilience4j" }
+spring-boot-starter-aop   = { module = "org.springframework.boot:spring-boot-starter-aop" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 
 # ── 테스트 ─────────────────────────────────────────────────────────────────
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }

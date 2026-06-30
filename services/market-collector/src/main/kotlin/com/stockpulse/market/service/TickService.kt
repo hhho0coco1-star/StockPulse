@@ -5,6 +5,8 @@ import com.stockpulse.market.dto.QuoteResponse
 import com.stockpulse.market.dto.TickEvent
 import com.stockpulse.market.kafka.TickProducer
 import com.stockpulse.market.repository.TickRepository
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker
+import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -16,6 +18,8 @@ class TickService(
     private val tickProducer: TickProducer,
     private val redisTemplate: StringRedisTemplate
 ) {
+    private val log = LoggerFactory.getLogger(javaClass)
+
     fun process(symbol: String, price: BigDecimal, volume: Long) {
         val now = Instant.now()
 
@@ -36,6 +40,7 @@ class TickService(
         tickProducer.send(TickEvent(symbol = symbol, price = price, volume = volume, time = now))
     }
 
+    @CircuitBreaker(name = "redis", fallbackMethod = "getQuoteFromDb")
     fun getQuote(symbol: String): QuoteResponse? {
         val key = "quote:$symbol"
         val hash = redisTemplate.opsForHash<String, String>().entries(key)
@@ -46,6 +51,18 @@ class TickService(
             volume    = hash["volume"]?.toLong() ?: 0L,
             updatedAt = Instant.parse(hash["updatedAt"] ?: Instant.now().toString())
         )
+    }
+
+    fun getQuoteFromDb(symbol: String, t: Throwable): QuoteResponse? {
+        log.warn("Redis 장애 → DB fallback: symbol={} cause={}", symbol, t.message)
+        return tickRepository.findLatestBySymbol(symbol)?.let { tick ->
+            QuoteResponse(
+                symbol    = tick.symbol,
+                price     = tick.price,
+                volume    = tick.volume,
+                updatedAt = tick.time
+            )
+        }
     }
 
     fun getQuotes(symbols: List<String>): List<QuoteResponse> =

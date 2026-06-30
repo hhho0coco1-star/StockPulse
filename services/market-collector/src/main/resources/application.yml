@@ -33,6 +33,52 @@ kis:
   ws-url: ws://ops.koreainvestment.com:31000
   subscribe-symbols: "005930,000660"
 
+resilience4j:
+  circuitbreaker:
+    instances:
+      kisApproval:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      redis:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        record-exceptions:
+          - org.springframework.data.redis.RedisConnectionFailureException
+          - org.springframework.dao.QueryTimeoutException
+          - io.lettuce.core.RedisCommandTimeoutException
+  retry:
+    instances:
+      kisApproval:
+        max-attempts: 3
+        wait-duration: 1s
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - org.springframework.web.reactive.function.client.WebClientRequestException
+          - org.springframework.web.reactive.function.client.WebClientResponseException$ServiceUnavailable
+          - java.util.concurrent.TimeoutException
+  timelimiter:
+    instances:
+      kisApproval:
+        timeout-duration: 5s
+        cancel-running-future: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers,metrics
+  health:
+    circuitbreakers:
+      enabled: true
+
 logging:
   level:
     com.stockpulse: DEBUG

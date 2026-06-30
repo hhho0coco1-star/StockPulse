@@ -27,4 +27,16 @@ class TickRepository(private val jdbcTemplate: JdbcTemplate) {
             )},
             symbol, Timestamp.from(from), Timestamp.from(to)
         )
+
+    fun findLatestBySymbol(symbol: String): Tick? =
+        jdbcTemplate.query(
+            "SELECT time, symbol, price, volume FROM ticks WHERE symbol = ? ORDER BY time DESC LIMIT 1",
+            { rs, _ -> Tick(
+                time   = rs.getTimestamp("time").toInstant(),
+                symbol = rs.getString("symbol"),
+                price  = rs.getBigDecimal("price"),
+                volume = rs.getLong("volume")
+            )},
+            symbol
+        ).firstOrNull()
 }

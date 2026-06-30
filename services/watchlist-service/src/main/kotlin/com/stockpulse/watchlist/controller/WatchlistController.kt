@@ -4,6 +4,7 @@ import com.stockpulse.common.ApiResponse
 import com.stockpulse.watchlist.dto.AddWatchRequest
 import com.stockpulse.watchlist.service.DuplicateSymbolException
 import com.stockpulse.watchlist.service.WatchlistService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -27,7 +28,7 @@ class WatchlistController(private val service: WatchlistService) {
     @PostMapping
     fun add(
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody request: AddWatchRequest
+        @Valid @RequestBody request: AddWatchRequest
     ): ResponseEntity<ApiResponse<Any>> {
         return try {
             val data = service.add(userId, request)

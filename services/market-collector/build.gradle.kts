@@ -18,6 +18,10 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.reactor)
+    implementation(libs.resilience4j.spring.boot3)
+    implementation(libs.resilience4j.kotlin)
+    implementation(libs.spring.boot.starter.aop)
+    implementation(libs.spring.boot.starter.actuator)
 
     testImplementation(libs.spring.boot.starter.test)
 }

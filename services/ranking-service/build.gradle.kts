@@ -12,5 +12,9 @@ dependencies {
     implementation(libs.spring.kafka)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlin.reflect)
+    implementation(libs.resilience4j.spring.boot3)
+    implementation(libs.spring.boot.starter.aop)
+    implementation(libs.spring.boot.starter.actuator)
+
     testImplementation(libs.spring.boot.starter.test)
 }

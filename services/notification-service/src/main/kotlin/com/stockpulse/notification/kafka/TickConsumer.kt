@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 
 /**
  * market.tick 토픽 소비자.
- * 수신된 JSON을 AlertEvaluator에 위임한다.
+ * 예외는 KafkaErrorHandlingConfig의 DefaultErrorHandler → DLT로 위임한다.
  */
 @Component
 class TickConsumer(private val alertEvaluator: AlertEvaluator) {
@@ -17,10 +17,6 @@ class TickConsumer(private val alertEvaluator: AlertEvaluator) {
     @KafkaListener(topics = ["market.tick"], groupId = "notification-service")
     fun consume(message: String) {
         log.debug("market.tick 수신: {}", message)
-        try {
-            alertEvaluator.evaluate(message)
-        } catch (e: Exception) {
-            log.error("틱 평가 중 오류: message={} error={}", message, e.message, e)
-        }
+        alertEvaluator.evaluate(message)   // 예외는 ErrorHandler → DLT 로 위임
     }
 }

@@ -23,6 +23,27 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
+resilience4j:
+  retry:
+    instances:
+      alertEval:
+        max-attempts: 3
+        wait-duration: 500ms
+        retry-exceptions:
+          - org.springframework.dao.TransientDataAccessException
+          - org.springframework.dao.QueryTimeoutException
+        ignore-exceptions:
+          - com.fasterxml.jackson.core.JsonProcessingException
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers,metrics
+  health:
+    circuitbreakers:
+      enabled: true
+
 logging:
   level:
     com.stockpulse: DEBUG

@@ -5,6 +5,7 @@ import com.stockpulse.discussion.dto.ChatMessageRequest
 import com.stockpulse.discussion.dto.CommentRequest
 import com.stockpulse.discussion.dto.PostRequest
 import com.stockpulse.discussion.service.DiscussionService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -31,7 +32,7 @@ class DiscussionController(private val service: DiscussionService) {
     fun createPost(
         @PathVariable symbol: String,
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody request: PostRequest
+        @Valid @RequestBody request: PostRequest
     ): ResponseEntity<ApiResponse<Any>> {
         return try {
             val data = service.createPost(symbol, userId, request)
@@ -96,7 +97,7 @@ class DiscussionController(private val service: DiscussionService) {
     fun createComment(
         @PathVariable postId: Long,
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody request: CommentRequest
+        @Valid @RequestBody request: CommentRequest
     ): ResponseEntity<ApiResponse<Any>> {
         return try {
             val data = service.createComment(postId, userId, request)
@@ -129,7 +130,7 @@ class DiscussionController(private val service: DiscussionService) {
     fun publishChat(
         @PathVariable roomId: String,
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody request: ChatMessageRequest
+        @Valid @RequestBody request: ChatMessageRequest
     ): ResponseEntity<ApiResponse<Any>> {
         val data = service.publishChat(roomId, userId, request.message)
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(ApiResponse.ok(data))

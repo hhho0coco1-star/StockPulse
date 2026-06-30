@@ -3,15 +3,24 @@ package com.stockpulse.trading.controller
 import com.stockpulse.common.ApiResponse
 import com.stockpulse.trading.domain.Order
 import com.stockpulse.trading.service.TradingService
+import jakarta.validation.Valid
+import jakarta.validation.constraints.DecimalMin
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Positive
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
 data class OrderRequest(
+    @field:NotBlank(message = "symbol은 필수입니다")
     val symbol: String,
+    @field:NotBlank(message = "side는 필수입니다")
     val side: String,
+    @field:NotBlank(message = "type은 필수입니다")
     val type: String,
+    @field:Positive(message = "quantity는 1 이상이어야 합니다")
     val quantity: Long,
+    @field:DecimalMin(value = "0.0", inclusive = false, message = "price는 0보다 커야 합니다")
     val price: BigDecimal = BigDecimal("50000")
 )
 
@@ -23,7 +32,7 @@ class TradingController(private val tradingService: TradingService) {
     @ResponseStatus(HttpStatus.ACCEPTED)
     fun placeOrder(
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody req: OrderRequest
+        @Valid @RequestBody req: OrderRequest
     ): ApiResponse<Map<String, Any>> {
         val order = tradingService.placeOrder(userId, req.symbol, req.side, req.type, req.quantity, req.price)
         return ApiResponse.ok(mapOf("orderId" to order.id, "status" to order.status))

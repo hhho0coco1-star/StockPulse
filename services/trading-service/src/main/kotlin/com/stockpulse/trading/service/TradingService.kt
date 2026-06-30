@@ -2,9 +2,9 @@ package com.stockpulse.trading.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.stockpulse.trading.domain.*
+import com.stockpulse.trading.kafka.OrderEventPublisher
 import com.stockpulse.trading.repository.*
 import org.slf4j.LoggerFactory
-import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -14,7 +14,7 @@ class TradingService(
     private val orderRepository: OrderRepository,
     private val orderSagaRepository: OrderSagaRepository,
     private val processedEventRepository: ProcessedEventRepository,
-    private val kafkaTemplate: KafkaTemplate<String, String>,
+    private val orderEventPublisher: OrderEventPublisher,
     private val objectMapper: ObjectMapper
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -112,6 +112,6 @@ class TradingService(
             "symbol" to symbol, "side" to side, "quantity" to quantity,
             "filledPrice" to filledPrice, "amount" to amount
         ))
-        kafkaTemplate.send("order.events", orderId.toString(), payload)
+        orderEventPublisher.publish(orderId.toString(), payload)
     }
 }

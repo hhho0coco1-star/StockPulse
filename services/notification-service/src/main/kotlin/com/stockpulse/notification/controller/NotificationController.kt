@@ -6,6 +6,7 @@ import com.stockpulse.notification.dto.AlertUpdateRequest
 import com.stockpulse.notification.dto.DeviceRequest
 import com.stockpulse.notification.service.AlertService
 import com.stockpulse.notification.service.DuplicateTokenException
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,7 +29,7 @@ class NotificationController(private val alertService: AlertService) {
     @PostMapping("/alerts")
     fun createRule(
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody request: AlertRequest
+        @Valid @RequestBody request: AlertRequest
     ): ResponseEntity<ApiResponse<Any>> {
         return try {
             val data = alertService.createRule(userId, request)
@@ -78,7 +79,7 @@ class NotificationController(private val alertService: AlertService) {
     @PostMapping("/devices")
     fun registerDevice(
         @RequestHeader("X-User-Id") userId: Long,
-        @RequestBody request: DeviceRequest
+        @Valid @RequestBody request: DeviceRequest
     ): ResponseEntity<ApiResponse<Any>> {
         return try {
             val data = alertService.registerDevice(userId, request)

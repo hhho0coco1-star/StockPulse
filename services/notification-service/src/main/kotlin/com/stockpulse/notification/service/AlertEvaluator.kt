@@ -6,6 +6,7 @@ import com.stockpulse.notification.domain.NotificationLog
 import com.stockpulse.notification.repository.AlertRuleRepository
 import com.stockpulse.notification.repository.DeviceTokenRepository
 import com.stockpulse.notification.repository.NotificationLogRepository
+import io.github.resilience4j.retry.annotation.Retry
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,6 +26,7 @@ class AlertEvaluator(
 
     private val log = LoggerFactory.getLogger(javaClass)
 
+    @Retry(name = "alertEval")
     @Transactional
     fun evaluate(tickJson: String) {
         val tick: Map<String, Any> = objectMapper.readValue(tickJson)

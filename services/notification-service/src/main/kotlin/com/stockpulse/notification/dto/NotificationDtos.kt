@@ -1,11 +1,14 @@
 package com.stockpulse.notification.dto
 
+import jakarta.validation.constraints.NotBlank
 import java.time.Instant
 
 // ── Request DTOs ──────────────────────────────────────────────────────────────
 
 data class AlertRequest(
+    @field:NotBlank(message = "symbol은 필수입니다")
     val symbol: String,
+    @field:NotBlank(message = "type은 필수입니다")
     val type: String,
     val condition: Map<String, Any>,
     val enabled: Boolean = true
@@ -17,7 +20,9 @@ data class AlertUpdateRequest(
 )
 
 data class DeviceRequest(
+    @field:NotBlank(message = "token은 필수입니다")
     val token: String,
+    @field:NotBlank(message = "platform은 필수입니다")
     val platform: String
 )
 
