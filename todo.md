@@ -56,6 +56,7 @@
   - Resilience4j(CB·Retry·TimeLimiter), Kafka DLT, Redis fallback, GlobalExceptionHandler(6개 서비스) + 요청 검증 표준화
 - [x] Phase 6 — 관측 (Prometheus·Grafana·Loki·Tempo)
   - 14개 서비스 Micrometer 계측(prometheus·tracing-otel·loki appender) + reactive 3개 Reactor Context 전파 + 관측 인프라 5컨테이너. OTLP endpoint는 HTTP 4318/v1/traces(스펙 4317 gRPC 오류 수정). 검증: 메트릭 노출·타겟 UP·Loki 로그·Tempo 트레이스 PASS
-- [ ] Phase 7 — 부하/장애 테스트 (k6, Chaos Mesh 장애 주입, 트러블슈팅)
+- [x] Phase 7 — 부하/장애 테스트 (k6, Chaos Mesh 장애 주입, 트러블슈팅)
+  - k6 스크립트 4종(scenarioA·B·C·all) + Chaos Mesh YAML 3종(pod-kill·network-delay·kafka-offline) + docs/10·11·12 갱신. Prometheus 포트 버그(notification-service 8093 누락) 수정. 실부하 미실행(Phase 8 K8s 배포 후 재측정 예정).
 - [ ] Phase 8 — 배포/가용성 (K8s+HPA, Helm+GitHub Actions, 웹 실배포)
 - [ ] Phase 9 — 앱 (React Native/Expo, FCM 푸시)

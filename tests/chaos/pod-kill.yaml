@@ -1,0 +1,14 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: trading-pod-kill
+  namespace: stockpulse
+spec:
+  action: pod-kill
+  mode: one
+  selector:
+    namespaces:
+      - stockpulse
+    labelSelectors:
+      app.kubernetes.io/name: trading-service
+  # 일회성. 반복 테스트는 Schedule 리소스를 별도 작성.

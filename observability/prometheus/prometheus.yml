@@ -19,7 +19,8 @@ scrape_configs:
           - 'host.docker.internal:8089'   # ranking-service
           - 'host.docker.internal:8090'   # realtime-gateway
           - 'host.docker.internal:8091'   # discussion-service
-          - 'host.docker.internal:8092'   # notification-service
+          - 'host.docker.internal:8092'   # watchlist-service
+          - 'host.docker.internal:8093'   # notification-service
     relabel_configs:
       - source_labels: [__address__]
         target_label: instance

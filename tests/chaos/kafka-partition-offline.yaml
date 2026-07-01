@@ -1,0 +1,28 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: kafka-partition-offline
+  namespace: stockpulse
+spec:
+  action: partition
+  mode: all
+  selector:
+    namespaces:
+      - stockpulse
+    labelSelectors:
+      app.kubernetes.io/name: kafka
+  direction: both
+  target:
+    mode: all
+    selector:
+      namespaces:
+        - stockpulse
+      expressionSelectors:
+        - key: app.kubernetes.io/name
+          operator: NotIn
+          values:
+            - kafka
+  duration: '60s'
+# Kafka 격리 해제 후 확인:
+#   kafka-console-consumer --bootstrap-server localhost:9092 \
+#     --topic market.tick.DLT --from-beginning --max-messages 10

@@ -1,0 +1,28 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: collector-redis-delay
+  namespace: stockpulse
+spec:
+  action: delay
+  mode: all
+  selector:
+    namespaces:
+      - stockpulse
+    labelSelectors:
+      app.kubernetes.io/name: market-collector
+  direction: to
+  target:
+    mode: all
+    selector:
+      namespaces:
+        - stockpulse
+      labelSelectors:
+        app.kubernetes.io/name: redis
+  delay:
+    latency: '200ms'
+    jitter: '20ms'
+    correlation: '50'
+  duration: '90s'
+# 주의: Resilience4j TimeLimiter가 200ms보다 작아야 CB가 열림.
+# market-collector application.yml의 resilience4j.timelimiter.instances.redis.timeoutDuration 확인.
