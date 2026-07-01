@@ -1,0 +1,190 @@
+global:
+  imageRegistry: ghcr.io/hhho0coco0/stockpulse
+  imageTag: latest
+  imagePullSecrets:
+    - name: ghcr-pull-secret
+  namespace: stockpulse-app
+
+defaults:
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 384Mi
+    limits:
+      cpu: 500m
+      memory: 768Mi
+  probes:
+    liveness:
+      path: /actuator/health/liveness
+      initialDelaySeconds: 40
+      periodSeconds: 10
+      failureThreshold: 3
+    readiness:
+      path: /actuator/health/readiness
+      initialDelaySeconds: 20
+      periodSeconds: 5
+      failureThreshold: 6
+    startup:
+      path: /actuator/health/readiness
+      failureThreshold: 30
+      periodSeconds: 5
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    cpuUtilization: 70
+
+services:
+  api-gateway:
+    port: 8080
+    hpa:
+      enabled: true
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: "1"
+        memory: 1Gi
+    envFromSecret:
+      - REDIS_PASSWORD
+      - JWT_SECRET
+  auth-service:
+    port: 8081
+    envFromSecret:
+      - POSTGRES_PASSWORD
+      - JWT_SECRET
+      - REDIS_PASSWORD
+  market-collector:
+    port: 8082
+    hpa:
+      enabled: true
+    envFromSecret:
+      - KIS_APP_KEY
+      - KIS_APP_SECRET
+      - REDIS_PASSWORD
+      - TIMESCALE_PASSWORD
+  news-collector:
+    port: 8083
+    envFromSecret:
+      - NAVER_CLIENT_ID
+      - NAVER_CLIENT_SECRET
+  fundamentals-collector:
+    port: 8084
+    envFromSecret:
+      - DART_API_KEY
+  insight-service:
+    port: 8085
+    envFromSecret:
+      - MONGO_PASSWORD
+      - TIMESCALE_PASSWORD
+  trading-service:
+    port: 8086
+    hpa:
+      enabled: true
+    envFromSecret:
+      - POSTGRES_PASSWORD
+  account-service:
+    port: 8087
+    envFromSecret:
+      - POSTGRES_PASSWORD
+  portfolio-service:
+    port: 8088
+    envFromSecret:
+      - POSTGRES_PASSWORD
+  ranking-service:
+    port: 8089
+    envFromSecret:
+      - REDIS_PASSWORD
+  realtime-gateway:
+    port: 8090
+    envFromSecret:
+      - REDIS_PASSWORD
+      - JWT_SECRET
+  discussion-service:
+    port: 8091
+    envFromSecret:
+      - POSTGRES_PASSWORD
+      - REDIS_PASSWORD
+  watchlist-service:
+    port: 8092
+    envFromSecret:
+      - POSTGRES_PASSWORD
+  notification-service:
+    port: 8093
+    envFromSecret:
+      - POSTGRES_PASSWORD
+      - FCM_CREDENTIALS
+
+ingress:
+  enabled: true
+  className: nginx
+  host: stockpulse.example.com
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+
+infra:
+  kafka:
+    enabled: true
+  redis:
+    enabled: true
+  postgresql:
+    enabled: true
+  timescaledb:
+    enabled: true
+  mongodb:
+    enabled: true
+
+# Bitnami subchart overrides (infra)
+kafka:
+  controller:
+    replicaCount: 1
+  kraft:
+    enabled: true
+  listeners:
+    client:
+      protocol: PLAINTEXT
+  persistence:
+    size: 4Gi
+    storageClass: standard
+
+redis:
+  architecture: standalone
+  auth:
+    enabled: true
+    existingSecret: stockpulse-secrets
+    existingSecretPasswordKey: REDIS_PASSWORD
+  master:
+    persistence:
+      size: 1Gi
+      storageClass: standard
+
+postgresql:
+  auth:
+    existingSecret: stockpulse-secrets
+    secretKeys:
+      adminPasswordKey: POSTGRES_PASSWORD
+    database: stockpulse
+  primary:
+    persistence:
+      size: 4Gi
+      storageClass: standard
+    initdb:
+      scriptsConfigMap: stockpulse-pg-init
+
+mongodb:
+  architecture: standalone
+  auth:
+    existingSecret: stockpulse-secrets
+  persistence:
+    size: 2Gi
+    storageClass: standard
+
+timescaledb:
+  replicaCount: 1
+  persistentVolumes:
+    data:
+      size: 4Gi
+      storageClass: standard

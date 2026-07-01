@@ -1,0 +1,15 @@
+.git
+.gitignore
+*.md
+.DS_Store
+_workspace
+docs
+tests
+build
+.gradle
+**/build
+**/.gradle
+*.log
+.env
+.env.*
+helm/**/charts

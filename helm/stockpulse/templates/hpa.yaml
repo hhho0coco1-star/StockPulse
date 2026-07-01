@@ -1,0 +1,31 @@
+{{- range $name, $svc := .Values.services }}
+{{- $hpaEnabled := (($svc.hpa).enabled) | default false }}
+{{- if $hpaEnabled }}
+{{- $defaults := $.Values.defaults.hpa }}
+{{- $svcHpa := $svc.hpa | default dict }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $name }}-hpa
+  namespace: {{ $.Values.global.namespace | default $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: stockpulse
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $name }}
+  minReplicas: {{ $svcHpa.minReplicas | default $defaults.minReplicas }}
+  maxReplicas: {{ $svcHpa.maxReplicas | default $defaults.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $svcHpa.cpuUtilization | default $defaults.cpuUtilization }}
+{{- end }}
+{{- end }}

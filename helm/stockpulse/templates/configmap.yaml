@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stockpulse-common-config
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  labels:
+    {{- include "stockpulse.labels" . | nindent 4 }}
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  # Kafka
+  KAFKA_BOOTSTRAP_SERVERS: "{{ .Release.Name }}-kafka:9092"
+  # Redis
+  REDIS_HOST: "{{ .Release.Name }}-redis-master"
+  REDIS_PORT: "6379"
+  # PostgreSQL
+  POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "postgres"
+  # TimescaleDB
+  TIMESCALE_HOST: "{{ .Release.Name }}-timescaledb"
+  TIMESCALE_PORT: "5432"
+  TIMESCALE_USER: "postgres"
+  # MongoDB
+  MONGO_HOST: "{{ .Release.Name }}-mongodb"
+  MONGO_PORT: "27017"
+  # 서비스 내부 URL (다운스트림 호출용)
+  AUTH_SERVICE_URL: "http://auth-service:8081"
+  MARKET_SERVICE_URL: "http://market-collector:8082"
+  TRADING_SERVICE_URL: "http://trading-service:8086"
+  ACCOUNT_SERVICE_URL: "http://account-service:8087"
+  PORTFOLIO_SERVICE_URL: "http://portfolio-service:8088"
+  # Actuator probe path 활성화 (spring boot)
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+  # Observability
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://tempo:4318/v1/traces"
+  TRACE_SAMPLING: "0.1"
+---
+{{- if .Values.infra.postgresql.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: stockpulse-pg-init
+  namespace: {{ .Values.global.namespace | default .Release.Namespace }}
+  labels:
+    {{- include "stockpulse.labels" . | nindent 4 }}
+data:
+  01-create-databases.sql: |
+    CREATE DATABASE auth;
+    CREATE DATABASE trading;
+    CREATE DATABASE account;
+    CREATE DATABASE portfolio;
+    CREATE DATABASE ranking;
+    CREATE DATABASE insight;
+    CREATE DATABASE discussion;
+    CREATE DATABASE watchlist;
+    CREATE DATABASE notification;
+{{- end }}

@@ -1,0 +1,29 @@
+apiVersion: v2
+name: stockpulse
+description: StockPulse MSA — 실시간 투자 인사이트·모의투자·종목 커뮤니티
+type: application
+version: 0.1.0
+appVersion: "0.0.1"
+
+dependencies:
+  - name: kafka
+    version: "~30.x"
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: infra.kafka.enabled
+  - name: redis
+    version: "~20.x"
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: infra.redis.enabled
+  - name: postgresql
+    version: "~16.x"
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: infra.postgresql.enabled
+  - name: mongodb
+    version: "~16.x"
+    repository: oci://registry-1.docker.io/bitnamicharts
+    condition: infra.mongodb.enabled
+  - name: timescaledb-single
+    version: "~0.33.x"
+    repository: https://charts.timescale.com
+    alias: timescaledb
+    condition: infra.timescaledb.enabled

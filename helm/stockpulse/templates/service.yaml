@@ -1,0 +1,22 @@
+{{- range $name, $svc := .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.global.namespace | default $.Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/part-of: stockpulse
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: {{ $name }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+  ports:
+    - port: {{ $svc.port }}
+      targetPort: {{ $svc.port }}
+      protocol: TCP
+      name: http
+{{- end }}

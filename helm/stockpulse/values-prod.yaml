@@ -1,0 +1,29 @@
+# 클라우드(GKE Autopilot / NCloud NKS) 프로덕션 오버라이드
+global:
+  imageRegistry: ghcr.io/hhho0coco0/stockpulse
+  imageTag: latest          # CD가 github.sha로 override
+
+ingress:
+  host: stockpulse.example.com   # 실제 도메인으로 변경 (GKE Ingress IP → nip.io or real domain)
+
+# GKE: standard-rwo / NCloud NKS: nks-block-storage
+kafka:
+  persistence:
+    storageClass: standard-rwo
+redis:
+  master:
+    persistence:
+      storageClass: standard-rwo
+postgresql:
+  primary:
+    persistence:
+      storageClass: standard-rwo
+      size: 10Gi
+mongodb:
+  persistence:
+    storageClass: standard-rwo
+timescaledb:
+  persistentVolumes:
+    data:
+      storageClass: standard-rwo
+      size: 10Gi

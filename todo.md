@@ -59,4 +59,9 @@
 - [x] Phase 7 — 부하/장애 테스트 (k6, Chaos Mesh 장애 주입, 트러블슈팅)
   - k6 스크립트 4종(scenarioA·B·C·all) + Chaos Mesh YAML 3종(pod-kill·network-delay·kafka-offline) + docs/10·11·12 갱신. Prometheus 포트 버그(notification-service 8093 누락) 수정. 실부하 미실행(Phase 8 K8s 배포 후 재측정 예정).
 - [ ] Phase 8 — 배포/가용성 (K8s+HPA, Helm+GitHub Actions, 웹 실배포)
+  - [x] Helm 차트 (단일 차트 + services range, 인프라 subchart dependency)
+  - [x] 14개 서비스 Dockerfile (멀티스테이지 gradle:8.10-jdk21 → temurin:21-jre-alpine)
+  - [x] GitHub Actions ci.yml (PR 빌드+테스트+helm lint) / cd.yml (matrix 14 이미지 GHCR push + Helm deploy)
+  - [ ] K8s 배포 검증 (kind 로컬 또는 GKE Autopilot)
+  - [ ] HPA 스케일아웃 확인 (trading-service CPU 70% 트리거)
 - [ ] Phase 9 — 앱 (React Native/Expo, FCM 푸시)

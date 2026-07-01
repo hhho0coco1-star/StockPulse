@@ -1,0 +1,29 @@
+# 로컬 kind/minikube 오버라이드 — 리소스 최소화, 단일 replica, NodePort 옵션
+global:
+  imageRegistry: ghcr.io/hhho0coco0/stockpulse
+  imageTag: latest
+  imagePullSecrets: []     # 로컬 빌드 이미지 사용 시 pull secret 불필요
+
+ingress:
+  host: localhost           # ngrok/cloudflared 터널 사용 시 외부 URL로 변경
+  className: nginx          # kind: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/.../deploy/static/provider/kind/deploy.yaml
+
+# kind/minikube StorageClass는 보통 'standard' (rancher/hostpath)
+kafka:
+  persistence:
+    storageClass: standard
+redis:
+  master:
+    persistence:
+      storageClass: standard
+postgresql:
+  primary:
+    persistence:
+      storageClass: standard
+mongodb:
+  persistence:
+    storageClass: standard
+timescaledb:
+  persistentVolumes:
+    data:
+      storageClass: standard
