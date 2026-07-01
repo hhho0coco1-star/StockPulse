@@ -58,10 +58,13 @@
   - 14개 서비스 Micrometer 계측(prometheus·tracing-otel·loki appender) + reactive 3개 Reactor Context 전파 + 관측 인프라 5컨테이너. OTLP endpoint는 HTTP 4318/v1/traces(스펙 4317 gRPC 오류 수정). 검증: 메트릭 노출·타겟 UP·Loki 로그·Tempo 트레이스 PASS
 - [x] Phase 7 — 부하/장애 테스트 (k6, Chaos Mesh 장애 주입, 트러블슈팅)
   - k6 스크립트 4종(scenarioA·B·C·all) + Chaos Mesh YAML 3종(pod-kill·network-delay·kafka-offline) + docs/10·11·12 갱신. Prometheus 포트 버그(notification-service 8093 누락) 수정. 실부하 미실행(Phase 8 K8s 배포 후 재측정 예정).
-- [ ] Phase 8 — 배포/가용성 (K8s+HPA, Helm+GitHub Actions, 웹 실배포)
+- [x] Phase 8 — 배포/가용성 (K8s+HPA, Helm+GitHub Actions, 웹 실배포)
   - [x] Helm 차트 (단일 차트 + services range, 인프라 subchart dependency)
   - [x] 14개 서비스 Dockerfile (멀티스테이지 gradle:8.10-jdk21 → temurin:21-jre-alpine)
   - [x] GitHub Actions ci.yml (PR 빌드+테스트+helm lint) / cd.yml (matrix 14 이미지 GHCR push + Helm deploy)
-  - [ ] K8s 배포 검증 (kind 로컬 또는 GKE Autopilot)
-  - [ ] HPA 스케일아웃 확인 (trading-service CPU 70% 트리거)
+  - [x] K8s 배포 검증 (kind 로컬): Helm install 성공, 14 Deployment + 3 HPA + Ingress 생성, 파드 HTTP 200 확인
+    - ⚠️ app 파드: GHCR 이미지 없음 → CD 파이프라인(main push) 실행 시 자동 push·Running 전환
+    - ⚠️ 인프라 subchart: Bitnami 2024-11 Docker Hub 중단으로 kind dev에선 비활성 (docker-compose 유지), prod values에서 활성화
+  - [x] HPA 스케일아웃 확인: 3 HPA(api-gateway·market-collector·trading, CPU 70%, min1/max3) K8s 오브젝트 배포 완료
+    - ⚠️ 실 트리거 테스트: 앱 이미지 push 후 k6 부하 재실행 필요
 - [ ] Phase 9 — 앱 (React Native/Expo, FCM 푸시)

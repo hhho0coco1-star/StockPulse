@@ -1,0 +1,18 @@
+dependencies:
+- name: kafka
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 30.1.8
+- name: redis
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 20.13.4
+- name: postgresql
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 16.7.27
+- name: mongodb
+  repository: oci://registry-1.docker.io/bitnamicharts
+  version: 16.5.45
+- name: timescaledb-single
+  repository: https://charts.timescale.com
+  version: 0.33.1
+digest: sha256:a9480c11389ce6324d78bbd7328c1856de79b33f91c3463223944712c3e47fbf
+generated: "2026-07-01T10:06:24.4809408+09:00"

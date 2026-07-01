@@ -1,29 +1,21 @@
 # 로컬 kind/minikube 오버라이드 — 리소스 최소화, 단일 replica, NodePort 옵션
 global:
-  imageRegistry: ghcr.io/hhho0coco0/stockpulse
-  imageTag: latest
+  imageRegistry: ""        # Bitnami subchart에 전파되므로 비워서 docker.io 기본값 사용
   imagePullSecrets: []     # 로컬 빌드 이미지 사용 시 pull secret 불필요
 
 ingress:
-  host: localhost           # ngrok/cloudflared 터널 사용 시 외부 URL로 변경
-  className: nginx          # kind: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/.../deploy/static/provider/kind/deploy.yaml
+  host: localhost
 
-# kind/minikube StorageClass는 보통 'standard' (rancher/hostpath)
-kafka:
-  persistence:
-    storageClass: standard
-redis:
-  master:
-    persistence:
-      storageClass: standard
-postgresql:
-  primary:
-    persistence:
-      storageClass: standard
-mongodb:
-  persistence:
-    storageClass: standard
-timescaledb:
-  persistentVolumes:
-    data:
-      storageClass: standard
+# kind 로컬 환경: 인프라는 docker-compose로 운영, K8s는 앱 서비스만 배포
+# Bitnami 2024-11 이후 Docker Hub 배포 중단으로 kind에서 직접 pull 불가
+infra:
+  kafka:
+    enabled: false
+  redis:
+    enabled: false
+  postgresql:
+    enabled: false
+  timescaledb:
+    enabled: false
+  mongodb:
+    enabled: false

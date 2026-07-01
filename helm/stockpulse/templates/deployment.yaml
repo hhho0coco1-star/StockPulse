@@ -33,13 +33,13 @@ spec:
         app.kubernetes.io/part-of: stockpulse
         app: {{ $name }}
     spec:
-      {{- with $.Values.global.imagePullSecrets }}
+      {{- with $.Values.app.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ $name }}
-          image: "{{ $.Values.global.imageRegistry }}/{{ $name }}:{{ $.Values.global.imageTag }}"
+          image: "{{ $.Values.app.imageRegistry }}/{{ $name }}:{{ $.Values.app.imageTag }}"
           imagePullPolicy: Always
           ports:
             - containerPort: {{ $svc.port }}
