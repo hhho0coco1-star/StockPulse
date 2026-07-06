@@ -77,22 +77,68 @@
 
 ---
 
-## 🔴 잔여 실행 작업 (사람이 직접 해야 하는 항목)
+## 🔴 잔여 실행 작업 (우선순위 순)
 
-> 코드 작업 Phase 0~9 전부 완료. 아래는 외부 계정/서비스 연동 또는 런타임 검증 항목.
+> 코드 작업 Phase 0~9 전부 완료. 아래를 순서대로 진행한다.
 
-### 필수 (동작하려면 반드시 필요)
-- [ ] **GHCR 이미지 push** — `main` 브랜치에 push하면 CD workflow 자동 실행 → 14개 이미지 GHCR 업로드 → K8s 파드 Running 전환
-- [ ] **`mobile/.env` 생성** — `.env.example` 참고, `API_BASE_URL`·`WS_BASE_URL`을 실 서버 주소로 설정
-- [ ] **Firebase 앱 등록** — Firebase 콘솔에서 Android/iOS 앱 등록 → `google-services.json`·`GoogleService-Info.plist` → `mobile/` 배치
+### A. GHCR 이미지 push + K8s 파드 Running ⭐ 최우선
+> 완료 시: kind 클러스터 앱 파드 전체 Running 전환
 
-### 권장 (완성도 향상)
-- [ ] **k6 부하 테스트 실행** — K8s 파드 Running 후 `k6 run tests/load/all.js` 실행, docs/10·11 실측값 기입
-- [ ] **HPA 실트리거 확인** — k6 부하로 api-gateway CPU 70% 초과 → 레플리카 1→3 자동 증가 확인
-- [ ] **DART fundamentals-collector 런타임 검증** — cron 첫 실행(매일 02:00) 후 `/api/v1/insights/{symbol}` 점수 정상화 확인
-- [ ] **EAS Build 실행** — `cd mobile && eas build --platform android --profile preview` → APK 생성 확인
+- [ ] A-1. cd.yml `deploy` job에 `KUBECONFIG` 미설정 시 skip 조건 추가 (이미지만 push해도 OK)
+- [ ] A-2. `git push origin main` → CD workflow 트리거 → GHCR 14개 이미지 push (~30분)
+- [ ] A-3. kind에 GHCR pull secret 등록: `kubectl create secret docker-registry ghcr-pull-secret -n stockpulse-app --docker-server=ghcr.io --docker-username=hhho0coco1-star --docker-password=<PAT>`
+- [ ] A-4. `kubectl rollout restart deployment -n stockpulse-app` → 새 이미지 적용
+- [ ] A-5. `kubectl get pods -n stockpulse-app` → 14개 전부 Running 확인
 
-### 선택 (포트폴리오 강화)
-- [ ] **README 업데이트** — 아키텍처 다이어그램 이미지·스크린샷·실행 방법 보강
-- [ ] **GKE Autopilot 실배포** — `helm/stockpulse/values-prod.yaml` 사용, `stockpulse-secrets` K8s Secret 실제 키로 교체
-- [ ] **React 웹 클라이언트 구현** — 기획서에 명시된 TradingView 차트 웹 (현재 미착수)
+### B. mobile/.env 생성 (5분)
+> 완료 시: Expo 앱이 실 서버에 연결
+
+- [x] B-1. `mobile/.env` 로컬 개발용 생성 (`API_BASE_URL=http://localhost:8080/api/v1`)
+- [ ] B-2. `mobile/.env.production` 실 서버 주소로 생성 (A 완료 후)
+
+### C. Firebase 앱 등록 + FCM 에셋 (수동 ~20분)
+> 완료 시: FCM 푸시 알림 동작
+
+- [ ] C-1. [Firebase 콘솔](https://console.firebase.google.com) → 프로젝트 생성 → Android 앱 등록 (패키지: `com.stockpulse.app`)
+- [ ] C-2. iOS 앱 등록 (번들ID: `com.stockpulse.app`)
+- [ ] C-3. `google-services.json` → `mobile/` 복사
+- [ ] C-4. `GoogleService-Info.plist` → `mobile/` 복사
+
+### D. k6 부하 테스트 실행 + 결과 기입 (A 완료 후)
+> 완료 시: docs/10·11 실측값 채워짐
+
+- [ ] D-1. `docker-compose up -d` (인프라 기동 확인)
+- [ ] D-2. `k6 run --env K6_BASE_URL=http://localhost:8080 tests/load/scenarioA_quote.js`
+- [ ] D-3. `k6 run --env K6_BASE_URL=http://localhost:8080 tests/load/scenarioB_order.js`
+- [ ] D-4. `k6 run --env K6_BASE_URL=http://localhost:8080 tests/load/all.js`
+- [ ] D-5. docs/10_부하테스트_결과.md 실측값(RPS·p95·에러율) 기입
+- [ ] D-6. docs/11_장애테스트_결과.md Chaos Mesh 시나리오 결과 기입
+
+### E. HPA 실트리거 확인 (A·D 완료 후)
+> 완료 시: K8s 스케일아웃 동작 증명
+
+- [ ] E-1. `kubectl get hpa -n stockpulse-app -w` (모니터링)
+- [ ] E-2. k6 고부하 실행 → api-gateway·trading-service 레플리카 1→3 증가 확인
+- [ ] E-3. 부하 제거 후 레플리카 1로 복귀 확인
+
+### F. EAS Build (B·C 완료 후)
+> 완료 시: 실제 APK 생성
+
+- [ ] F-1. `cd mobile && npm install`
+- [ ] F-2. `npx eas login` (Expo 계정)
+- [ ] F-3. `npx eas build --platform android --profile preview`
+
+### G. README 업데이트 (선택)
+- [ ] G-1. 아키텍처 다이어그램 이미지 추가
+- [ ] G-2. 실행 방법 (docker-compose / kind K8s) 기술
+- [ ] G-3. 앱·화면 스크린샷 추가
+
+### H. GKE Autopilot 실배포 (선택)
+- [ ] H-1. GKE Autopilot 클러스터 생성
+- [ ] H-2. `KUBECONFIG` GitHub 시크릿 등록 (`kubectl config view --raw | base64`)
+- [ ] H-3. GitHub Secrets 등록: `POSTGRES_PASSWORD` `MONGO_PASSWORD` `REDIS_PASSWORD` `JWT_SECRET` `KIS_APP_KEY` `KIS_APP_SECRET` `NAVER_CLIENT_ID` `NAVER_CLIENT_SECRET` `DART_API_KEY`
+- [ ] H-4. `git push origin main` → CD 재실행 → GKE 배포 확인
+
+### I. React 웹 클라이언트 (선택, 미착수)
+- [ ] I-1. React 18 + Vite + Tailwind + TradingView 차트 프로젝트 초기 구성 (`web/` 디렉토리)
+- [ ] I-2. 시세판·인사이트·모의투자·커뮤니티 화면 구현
