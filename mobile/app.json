@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "StockPulse",
+    "slug": "stockpulse",
+    "version": "1.0.0",
+    "scheme": "stockpulse",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0E1A"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.stockpulse.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "프로필 사진 업로드"
+      }
+    },
+    "android": {
+      "package": "com.stockpulse.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0A0E1A"
+      },
+      "permissions": ["RECEIVE_BOOT_COMPLETED", "VIBRATE"]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/icon.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0A0E1A",
+          "sounds": []
+        }
+      ],
+      "expo-router",
+      "expo-secure-store"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "apiBaseUrl": "https://api.stockpulse.example.com/api/v1",
+      "wsUrl": "wss://api.stockpulse.example.com/ws",
+      "eas": {
+        "projectId": "<EAS_PROJECT_ID>"
+      }
+    }
+  }
+}

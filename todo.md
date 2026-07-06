@@ -67,4 +67,10 @@
     - ⚠️ 인프라 subchart: Bitnami 2024-11 Docker Hub 중단으로 kind dev에선 비활성 (docker-compose 유지), prod values에서 활성화
   - [x] HPA 스케일아웃 확인: 3 HPA(api-gateway·market-collector·trading, CPU 70%, min1/max3) K8s 오브젝트 배포 완료
     - ⚠️ 실 트리거 테스트: 앱 이미지 push 후 k6 부하 재실행 필요
-- [ ] Phase 9 — 앱 (React Native/Expo, FCM 푸시)
+- [x] Phase 9 — 앱 (React Native/Expo, FCM 푸시)
+  - [x] React Native(Expo) 프로젝트 초기 구성 (mobile/ 디렉토리, TypeScript strict, Expo Router v4 탭+스택)
+  - [x] 핵심 화면 6종 (시세판·인사이트·모의투자·커뮤니티·워치리스트·알림설정)
+  - [x] API 연동 (Axios+React Query v5, STOMP WebSocket 시세·주문·채팅)
+  - [x] FCM 푸시 수신·딥링크 (expo-notifications, 포그라운드/백그라운드 핸들러)
+  - [x] Expo 빌드·배포 설정 (app.json, eas.json development/preview/production)
+  - ⚠️ 미배치 항목: Firebase 에셋(google-services.json/GoogleService-Info.plist) — Firebase 콘솔 앱 등록 후 배치 필요
