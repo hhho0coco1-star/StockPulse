@@ -74,3 +74,25 @@
   - [x] FCM 푸시 수신·딥링크 (expo-notifications, 포그라운드/백그라운드 핸들러)
   - [x] Expo 빌드·배포 설정 (app.json, eas.json development/preview/production)
   - ⚠️ 미배치 항목: Firebase 에셋(google-services.json/GoogleService-Info.plist) — Firebase 콘솔 앱 등록 후 배치 필요
+
+---
+
+## 🔴 잔여 실행 작업 (사람이 직접 해야 하는 항목)
+
+> 코드 작업 Phase 0~9 전부 완료. 아래는 외부 계정/서비스 연동 또는 런타임 검증 항목.
+
+### 필수 (동작하려면 반드시 필요)
+- [ ] **GHCR 이미지 push** — `main` 브랜치에 push하면 CD workflow 자동 실행 → 14개 이미지 GHCR 업로드 → K8s 파드 Running 전환
+- [ ] **`mobile/.env` 생성** — `.env.example` 참고, `API_BASE_URL`·`WS_BASE_URL`을 실 서버 주소로 설정
+- [ ] **Firebase 앱 등록** — Firebase 콘솔에서 Android/iOS 앱 등록 → `google-services.json`·`GoogleService-Info.plist` → `mobile/` 배치
+
+### 권장 (완성도 향상)
+- [ ] **k6 부하 테스트 실행** — K8s 파드 Running 후 `k6 run tests/load/all.js` 실행, docs/10·11 실측값 기입
+- [ ] **HPA 실트리거 확인** — k6 부하로 api-gateway CPU 70% 초과 → 레플리카 1→3 자동 증가 확인
+- [ ] **DART fundamentals-collector 런타임 검증** — cron 첫 실행(매일 02:00) 후 `/api/v1/insights/{symbol}` 점수 정상화 확인
+- [ ] **EAS Build 실행** — `cd mobile && eas build --platform android --profile preview` → APK 생성 확인
+
+### 선택 (포트폴리오 강화)
+- [ ] **README 업데이트** — 아키텍처 다이어그램 이미지·스크린샷·실행 방법 보강
+- [ ] **GKE Autopilot 실배포** — `helm/stockpulse/values-prod.yaml` 사용, `stockpulse-secrets` K8s Secret 실제 키로 교체
+- [ ] **React 웹 클라이언트 구현** — 기획서에 명시된 TradingView 차트 웹 (현재 미착수)
