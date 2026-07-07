@@ -5,7 +5,7 @@ global:
     allowInsecureImages: true  # Bitnami v20+ 컨테이너 검증 우회 (학습용)
 
 app:
-  imageRegistry: ghcr.io/hhho0coco0/stockpulse
+  imageRegistry: ghcr.io/hhho0coco1-star/stockpulse
   imageTag: latest
   imagePullSecrets:
     - name: ghcr-pull-secret

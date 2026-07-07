@@ -52,8 +52,8 @@ jobs:
           build-args: |
             SERVICE=services/${{ matrix.service }}
           tags: |
-            ghcr.io/hhho0coco0/stockpulse/${{ matrix.service }}:latest
-            ghcr.io/hhho0coco0/stockpulse/${{ matrix.service }}:${{ github.sha }}
+            ghcr.io/hhho0coco1-star/stockpulse/${{ matrix.service }}:latest
+            ghcr.io/hhho0coco1-star/stockpulse/${{ matrix.service }}:${{ github.sha }}
           push: true
           cache-from: type=gha,scope=${{ matrix.service }}
           cache-to: type=gha,mode=max,scope=${{ matrix.service }}
