@@ -62,7 +62,7 @@ jobs:
     name: Helm Deploy to K8s
     needs: images
     runs-on: ubuntu-latest
-    if: ${{ secrets.KUBECONFIG != '' }}
+    if: ${{ vars.ENABLE_DEPLOY == 'true' }}
     steps:
       - uses: actions/checkout@v4
 
